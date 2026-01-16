@@ -8,8 +8,7 @@ import voluptuous as vol
 
 from . import async_get_or_create, setup_entry_status
 from homeassistant.components.switch import PLATFORM_SCHEMA, SwitchEntity
-from homeassistant.helpers.device_registry import DeviceEntryType
-from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.config_entries import SOURCE_IMPORT
 from homeassistant.core import callback
 from homeassistant.helpers.event import async_call_later

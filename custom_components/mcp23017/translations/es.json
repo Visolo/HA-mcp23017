@@ -1,0 +1,50 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Definir nueva entidad",
+                "data": {
+                    "i2c_address": "Dirección I2C",
+                    "i2c_bus": "Bus I2C",
+                    "platform": "Plataforma",
+                    "pin_number": "Número de pin",
+                    "pin_name": "Nombre del pin"
+                }
+            }
+        },
+        "abort": {
+            "already_configured": "Ya existe una entidad con los datos introducidos",
+            "cannot_create": "No se puede crear el dispositivo MCP23017 con los parámetros especificados",
+            "invalid_i2c_address": "Dirección I2C no válida"
+        },
+        "error": {
+            "invalid_i2c_bus": "El bus I2C debe estar entre 0 y 9",
+            "invalid_i2c_address": "La dirección I2C debe estar entre 0 (0x00) y 127 (0x7F)",
+            "invalid_pin_number": "El número de pin debe estar entre 0 y 15",
+            "invalid_numeric_input": "Introduce valores numéricos válidos para el bus I2C, la dirección y el número de pin"
+        }
+    },
+    "selector": {
+        "platform": {
+            "options": {
+                "binary_sensor": "Sensor binario",
+                "switch": "Interruptor"
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Definir propiedades de la entidad",
+                "data": {
+                    "invert_logic": "Invertir lógica",
+                    "pull_mode": "Modo pull",
+                    "hw_sync": "Valor inicial desde el hardware",
+                    "momentary": "Momentáneo",
+                    "pulse_time": "Tiempo de pulso en ms",
+                    "per_pin_device": "Dispositivo individual por pin"
+                }
+            }
+        }
+    }
+}

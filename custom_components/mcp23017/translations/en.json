@@ -1,25 +1,41 @@
 {
     "config": {
-        "abort": {
-            "already_configured": "Device is already configured",
-            "cannot_create": "Unable to create MCP23017 device with specified parameters"
-        },
         "step": {
             "user": {
+                "title": "Define New Entity",
                 "data": {
-                    "i2c_bus": "I2C bus",
                     "i2c_address": "I2C address",
-                    "pin_name": "Pin name",
+                    "i2c_bus": "I2C bus",
+                    "platform": "Platform",
                     "pin_number": "Pin number",
-                    "platform": "Platform"
-                },
-                "title": "Define New Entity"
+                    "pin_name": "Pin name"
+                }
+            }
+        },
+        "abort": {
+            "already_configured": "An entity with the provided data already exists",
+            "cannot_create": "Unable to create MCP23017 device with specified parameters",
+            "invalid_i2c_address": "Invalid I2C address"
+        },
+        "error": {
+            "invalid_i2c_bus": "I2C bus must be between 0 and 9",
+            "invalid_i2c_address": "I2C address must be between 0 (0x00) and 127 (0x7F)",
+            "invalid_pin_number": "Pin number must be between 0 and 15",
+            "invalid_numeric_input": "Please enter valid numeric values for I2C bus, address, and pin number"
+        }
+    },
+    "selector": {
+        "platform": {
+            "options": {
+                "binary_sensor": "Binary sensor",
+                "switch": "Switch"
             }
         }
     },
     "options": {
         "step": {
             "init": {
+                "title": "Define Entity Properties",
                 "data": {
                     "invert_logic": "Invert logic",
                     "pull_mode": "Pull mode",
@@ -27,8 +43,7 @@
                     "momentary": "Momentary",
                     "pulse_time": "Pulse time in ms",
                     "per_pin_device": "Individual device per pin"
-                },
-                "title": "Define Entity Properties"
+                }
             }
         }
     }

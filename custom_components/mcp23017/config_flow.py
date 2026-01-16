@@ -4,6 +4,7 @@ import voluptuous as vol
 
 from homeassistant import config_entries
 from homeassistant.core import callback
+from homeassistant.helpers import selector
 
 from . import i2c_device_exist
 from .const import (
@@ -27,8 +28,8 @@ from .const import (
     DOMAIN,
     MODE_DOWN,
     MODE_UP,
-    CONF_PER_PIN_DEVICE,          # ← NUEVO
-    DEFAULT_PER_PIN_DEVICE,       # ← NUEVO
+    CONF_PER_PIN_DEVICE,
+    DEFAULT_PER_PIN_DEVICE,
 )
 
 PLATFORMS = ["binary_sensor", "switch"]
@@ -84,7 +85,11 @@ class Mcp23017ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             try:
                 user_input[CONF_I2C_BUS] = int(user_input[CONF_I2C_BUS])
                 if user_input[CONF_I2C_BUS] < 0 or user_input[CONF_I2C_BUS] > 9:
-                    raise ValueError("I2C bus must be between 0 and 9")
+                    return self.async_show_form(
+                        step_id="user",
+                        data_schema=self._get_user_schema(user_input),
+                        errors={"base": "invalid_i2c_bus"},
+                    )
                 
                 # Handle I2C address - accept both hex (0x20) and decimal (32) formats
                 addr_str = user_input[CONF_I2C_ADDRESS].strip()
@@ -94,16 +99,28 @@ class Mcp23017ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     user_input[CONF_I2C_ADDRESS] = int(addr_str)
                 
                 if user_input[CONF_I2C_ADDRESS] < 0 or user_input[CONF_I2C_ADDRESS] > 127:
-                    raise ValueError("I2C address must be between 0 (0x00) and 127 (0x7F)")
+                    return self.async_show_form(
+                        step_id="user",
+                        data_schema=self._get_user_schema(user_input),
+                        errors={"base": "invalid_i2c_address"},
+                    )
                 
                 user_input[CONF_FLOW_PIN_NUMBER] = int(user_input[CONF_FLOW_PIN_NUMBER])
                 if user_input[CONF_FLOW_PIN_NUMBER] < 0 or user_input[CONF_FLOW_PIN_NUMBER] > 15:
-                    raise ValueError("Pin number must be between 0 and 15")
+                    return self.async_show_form(
+                        step_id="user",
+                        data_schema=self._get_user_schema(user_input),
+                        errors={"base": "invalid_pin_number"},
+                    )
             except ValueError as e:
                 error_msg = str(e)
                 # Provide friendlier message for parse errors
                 if "invalid literal" in error_msg:
-                    error_msg = "Please enter valid numeric values for I2C bus, address, and pin number"
+                    return self.async_show_form(
+                        step_id="user",
+                        data_schema=self._get_user_schema(user_input),
+                        errors={"base": "invalid_numeric_input"},
+                    )
                 return self.async_show_form(
                     step_id="user",
                     data_schema=self._get_user_schema(user_input),
@@ -126,7 +143,7 @@ class Mcp23017ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     data=user_input,
                 )
             else:
-                return self.async_abort(reason="Invalid I2C address")
+                return self.async_abort(reason="invalid_i2c_address")
 
         return self.async_show_form(
             step_id="user",
@@ -158,8 +175,13 @@ class Mcp23017ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 ): str,
                 vol.Required(
                     CONF_FLOW_PLATFORM,
-                    default=user_input.get(CONF_FLOW_PLATFORM, PLATFORMS[0]),
-                ): vol.In(PLATFORMS),
+                    default=user_input.get(CONF_FLOW_PLATFORM, PLATFORMS[0])
+                ): selector.SelectSelector(
+                    selector.SelectSelectorConfig(
+                        options=["binary_sensor", "switch"],
+                        translation_key="platform"
+                    )
+                ),
                 vol.Optional(CONF_FLOW_PIN_NAME, default=user_input.get(CONF_FLOW_PIN_NAME, "")): str,
             }
         )

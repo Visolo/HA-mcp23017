@@ -7,8 +7,7 @@ import logging
 import voluptuous as vol
 
 from homeassistant.components.binary_sensor import PLATFORM_SCHEMA, BinarySensorEntity
-from homeassistant.helpers.device_registry import DeviceEntryType
-from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from . import async_get_or_create, setup_entry_status
 from homeassistant.config_entries import SOURCE_IMPORT
 from homeassistant.core import callback

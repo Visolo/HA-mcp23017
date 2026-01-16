@@ -13,8 +13,23 @@
       }
     },
     "abort": {
-      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]",
-      "cannot_create": "Unable to create MCP23017 device with specified parameters"
+      "already_configured": "An entity with the provided data already exists",
+      "cannot_create": "Unable to create MCP23017 device with specified parameters",
+      "invalid_i2c_address": "Invalid I2C address"
+    },
+    "error": {
+      "invalid_i2c_bus": "I2C bus must be between 0 and 9",
+      "invalid_i2c_address": "I2C address must be between 0 (0x00) and 127 (0x7F)",
+      "invalid_pin_number": "Pin number must be between 0 and 15",
+      "invalid_numeric_input": "Please enter valid numeric values for I2C bus, address, and pin number"
+    }
+  },
+  "selector": {
+    "platform": {
+      "options": {
+        "binary_sensor": "Binary sensor",
+        "switch": "Switch"
+      }
     }
   },
   "options": {
@@ -25,6 +40,8 @@
           "invert_logic": "Invert logic",
           "pull_mode": "Pull mode",
           "hw_sync": "Initial value from hardware",
+          "momentary": "Momentary",
+          "pulse_time": "Pulse time in ms",
           "per_pin_device": "Individual device per pin"
         }
       }
